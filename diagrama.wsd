@@ -75,65 +75,29 @@ entity "Presupuesto" as ePresupuesto{
     id: long <<generated>>
     --
     fecha: Date
-    estado: Enum // Seria un embedded 
     id_servicioPrestado:FK
     id_cliente:FK
     id_tarifaInstalacion: FK
 }
 
+entity "Estado" as eEstado{
+    id: long <<generated>>
+    --
+    idPresupuesto: FK
+    fecha: Date
+    estadoPosible: varChar
+}
 
-ePresupuesto }|---|| eTarifaInstalacion
-eServicioPrestado }|---||eServicio
-eReceptor }o--|| eRepetidor
+
+ePresupuesto }|-|| eTarifaInstalacion
+eServicioPrestado }|-||eServicio
+eReceptor }o-|| eRepetidor
 eTarifaInstalacion }o--|| eServicio
 eCliente ||--o{ eServicioPrestado
 eCliente ||--o{ ePresupuesto
 eServicioPrestado ||--|| eDireccion
 eServicioPrestado ||--o| eReceptor 
-
-' Contexto general
-' Una cooperativa dedicada a la instalación y distribución de servicio de internet en zonas
-' rurales nos solicitó diseñar un sistema que le permita optimizar sus recursos en su negocio.
-' Para poder brindar un mejor servicio y poder presupuestar correctamente, esta organización
-' necesita verificar la geoposición específica donde se colocará el dispositivo receptor de cada
-' cliente. Para ello, en base al punto establecido (latitud y longitud), se debe calcular la altura máxima de la
-' edificación encontrada en el lugar. Actualmente esta medición es realizada de forma manual por un equipo
-' técnico. Este proceso demanda mucho tiempo y recursos por motivos de distancia, cuestiones climáticas,
-' entre otros. Una de las necesidades que debe satisfacer el Sistema es poder obtener la altura máxima en
-' base a la latitud y longitud, datos que son proporcionados por el futuro cliente a un operador de la
-' cooperativa.
-' Parte I - Servicios
-' Por el momento, la Cooperativa brinda solamente 3 tipos de servicios: 5 Mbps (simétrico1
-
-' ), 10 Mbps
-
-' (asimétrico) y 20 Mbps (simétrico).
-' Cada servicio tiene un precio base y un costo variable por cada cliente. Este costo variable está formado por
-' un coeficiente2 que sirve para calcular el Recargo por distancia y el Recargo por altura, que multiplican al
-' valor del precio base de cada servicio y se suman al mismo.
-' La cooperativa cuenta con un listado de repetidores. Cada repetidor cuenta con una dirección física (MAC),
-' radio de alcance, nombre identificatorio y sus coordenadas (latitud y longitud) correspondientes.
-' Además, se sabe que los repetidores admiten una cantidad máxima de conexiones. Una vez alcanzado el
-' umbral máximo no se deben admitir más conexiones en ese repetidor; por lo que deberá gestionarse la
-' instalación física de otro dispositivo, enviando un email al personal de cuadrilla que se encargará de
-' resolverlo. Una vez instalado, la cuadrilla enviará un email a la oficina con esta información para que pueda
-
-' El Sistema a desarrollar debe contemplar la realización de presupuestos y permitir la trazabilidad de los
-' mismos (activo, vencido, aprobado, rechazado).
-' Por cada servicio, la empresa tiene un cuadro tarifario del costo de instalación que se actualiza
-' bimestralmente.
-' Cada vez que se dé de alta un presupuesto se debe verificar si el cliente o la coordenada ya existe en el
-' Sistema y si ha tenido algún presupuesto rechazado; ya que si para un mismo cliente y coordenada existen
-' más de 3 (tres) presupuestos rechazados, se debe cobrar una suma fija adicional por política de la empresa.
-' Esta suma fija se conoce como Recargo por múltiples Rechazos y se suma al costo de instalación del servicio
-' presupuestado.
-' Asimismo, si el presupuesto pertenece a un cliente que ya tiene al menos 2 servicios contratados, se le debe
-' brindar una bonificación especial en el precio de instalación del 5%.
-' A la hora de emitir el presupuesto, además del costo de instalación, se debe incluir el abono mensual del
-' servicio que se está presupuestando (valor que se calcula en el módulo de Servicios).
-' Cada persona que solicite un presupuesto es registrada como cliente, con su nombre y apellido, número de
-' documento y al menos un medio de contacto (email o teléfono). Cabe mencionar que se deben registrar
-' todas las direcciones (coordenadas) en donde el cliente posea un servicio o haya solicitado la cotización.
+ePresupuesto ||--|{ eEstado
 
 
 @enduml

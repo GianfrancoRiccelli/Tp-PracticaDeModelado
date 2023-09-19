@@ -7,10 +7,10 @@ import java.util.Comparator;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "Combo")
+@DiscriminatorValue("combo")
 public class Combo extends Producto{
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "combo_id")
     private List<Producto> productos;
 
     public Combo(){

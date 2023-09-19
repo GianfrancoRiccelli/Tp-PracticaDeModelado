@@ -2,13 +2,17 @@ package models;
 
 import lombok.Setter;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
-@DiscriminatorValue("ProductoSimple")
+@DiscriminatorValue("simple")
 public class ProductoSimple extends Producto {
+    @Setter
+    @Column
     private Double precio;
+
+    @Setter
+    @Column
     private Integer stock;
 
     @Override
@@ -21,11 +25,4 @@ public class ProductoSimple extends Producto {
         return this.stock;
     }
 
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
 }

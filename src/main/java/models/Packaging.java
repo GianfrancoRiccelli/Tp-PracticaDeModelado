@@ -1,19 +1,20 @@
 package models;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "Packaging")
+@DiscriminatorValue("packaging")
 public class Packaging extends Decorado {
+    @Column
     private Double precio;
 
     public Packaging(Producto producto, Double precio) {
         super(producto);
         this.precio = precio;
+    }
+
+    public Packaging() {
+
     }
 
     @Override

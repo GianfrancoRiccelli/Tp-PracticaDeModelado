@@ -66,13 +66,19 @@ class TarifaInstalacion {
 
 class Presupuesto {
   - fecha: Date
-  - estado: Enum
+  - estadoActual: Estado
+  - estados: <list> Estado
+
   - servicioPrestado: ServicioPrestado
   - TarifaInstalacion: TarifaInstalacion
-  - Presupuesto: Estado
 }
 
-enum estado{
+class Estado{
+  -estadoPosible: Enum
+  -fechaCambio: Date
+}
+
+enum estadoPosible{
     - ACTIVO
     - VENCIDO
     - APROBADO
@@ -81,19 +87,21 @@ enum estado{
 
 Cliente --> "*" ServicioPrestado
 Cliente --> "*" Presupuesto
-ServicioPrestado -->  Receptor
+ServicioPrestado ->  Receptor
 
-Receptor "*" <-- Repetidor
+Receptor "*" <- Repetidor
 
 ServicioPrestado --> Servicio
 
-TarifaInstalacion <-- Presupuesto
+TarifaInstalacion <- Presupuesto
 
-ServicioPrestado -> TarifaInstalacion
+ServicioPrestado --> TarifaInstalacion
 
 ServicioPrestado --> Direccion
 
-Presupuesto --> estado
-Presupuesto --> ServicioPrestado
+Presupuesto -> Estado
+Estado -> estadoPosible
+
+Presupuesto -> ServicioPrestado
 
 @enduml

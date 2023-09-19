@@ -1,0 +1,99 @@
+@startuml classDiagram
+
+class Cliente {
+  - nombre
+  - apellido
+  - telefono
+  - email
+  - dni 
+  - ServicioPrestado: List<ServicioPrestado>
+  - Presupuestos: List<Presupuesto>
+
+  + cantPresupuestosRechazados(): int
+  + cantServiciosContratados(): int
+
+}
+
+class Direccion {
+  -Provincia
+  -Municipio
+  -Calle
+  -Numero
+}
+
+class Receptor {
+  - longitud
+  - latitud
+  - altura 
+}
+
+class Repetidor {
+  - nombre
+  - direccionFisica
+  - radioAlcance
+  - cantidadMaximaConexiones
+  - longitud
+  - latitud
+  - list<Receptor>
+
+  + validarConexion(Receptor): Bool
+  + agregarConexion(Receptor) 
+}
+
+class ServicioPrestado {
+  - TipoDeservicio: Servicio 
+  - costoVariable: Long
+  - Coeficiente: Double
+  - TarifaInstalacionActual: TarifaInstalacion
+  - RecargoDistancia: Double
+  - RecargoAltura: Double
+  - receptor: Receptor
+
+  + calcularCoeficiente(): Double
+  + calcularRecargoDistancia(Receptor): Double
+  + calcularRecargoAltura(Receptor): Double
+}
+
+class Servicio {
+  - precioBase: Int
+  - cantidadMB: Int
+}
+
+class TarifaInstalacion {
+  - fecha: Date
+  - costoInstalacion: Double
+}
+
+class Presupuesto {
+  - fecha: Date
+  - estado: Enum
+  - servicioPrestado: ServicioPrestado
+  - TarifaInstalacion: TarifaInstalacion
+  - Presupuesto: Estado
+}
+
+enum estado{
+    - ACTIVO
+    - VENCIDO
+    - APROBADO
+    - RECHAZADO
+}
+
+Cliente --> "*" ServicioPrestado
+Cliente --> "*" Presupuesto
+ServicioPrestado -->  Receptor
+
+Receptor "*" <-- Repetidor
+
+ServicioPrestado --> Servicio
+
+TarifaInstalacion <-- Presupuesto
+
+ServicioPrestado -> TarifaInstalacion
+
+ServicioPrestado --> Direccion
+
+Presupuesto --> estado
+Presupuesto --> ServicioPrestado
+
+@enduml
